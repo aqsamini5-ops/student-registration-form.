@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration Form</title>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+h2 { margin-bottom: 20px; }
+
+.form-group { margin-bottom: 15px; }
+
+label { display: block; margin-bottom: 5px; }
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.radio-group label,
+.checkbox-group label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    height: 14px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: green;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="card">
+<h2>Student Registration Form</h2>
+
+<form onsubmit="return validateForm()">
+
+<div class="form-group">
+<label>Name:</label>
+<input type="text" id="name" oninput="clearError('nameError')">
+<div class="error" id="nameError"></div>
+</div>
+
+<div class="form-group">
+<label>Email:</label>
+<input type="text" id="email" oninput="clearError('emailError')">
+<div class="error" id="emailError"></div>
+</div>
+
+<div class="form-group">
+<label>Password:</label>
+<input type="password" id="password" oninput="clearError('passwordError')">
+<div class="error" id="passwordError"></div>
+</div>
+
+<div class="form-group">
+<label>City:</label>
+<select id="city" onchange="clearError('cityError')">
+<option value="">Select City</option>
+<option>Rawalpindi</option>
+<option>Islamabad</option>
+<option>Lahore</option>
+</select>
+<div class="error" id="cityError"></div>
+</div>
+
+<div class="form-group">
+<label>Gender:</label>
+<div class="radio-group">
+<label><input type="radio" name="gender"> Male</label>
+<label><input type="radio" name="gender"> Female</label>
+<label><input type="radio" name="gender"> Other</label>
+</div>
+<div class="error" id="genderError"></div>
+</div>
+
+<div class="form-group">
+<label>Hobbies:</label>
+<div class="checkbox-group">
+<label><input type="checkbox" name="hobby"> Reading</label>
+<label><input type="checkbox" name="hobby"> Sports</label>
+<label><input type="checkbox" name="hobby"> Music</label>
+</div>
+<div class="error" id="hobbyError"></div>
+</div>
+
+<button type="submit">Submit</button>
+
+</form>
+</div>
+
+<script>
+
+// clear single error (extra feature)
+function clearError(id) {
+    document.getElementById(id).textContent = "";
+}
+
+function validateForm() {
+
+    let isValid = true;
+
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let password = document.getElementById("password").value;
+    let city = document.getElementById("city").value;
+
+    // Name
+    if (name === "") {
+        document.getElementById("nameError").textContent = "Name required";
+        isValid = false;
+    }
+
+    // Email
+    if (email === "") {
+        document.getElementById("emailError").textContent = "Email required";
+        isValid = false;
+    } else if (!email.includes("@")) {
+        document.getElementById("emailError").textContent = "Invalid email";
+        isValid = false;
+    }
+
+    // Password
+    if (password === "") {
+        document.getElementById("passwordError").textContent = "Password required";
+        isValid = false;
+    } else if (password.length < 6) {
+        document.getElementById("passwordError").textContent = "Minimum 6 characters";
+        isValid = false;
+    }
+
+    // City
+    if (city === "") {
+        document.getElementById("cityError").textContent = "Select city";
+        isValid = false;
+    }
+
+    // Gender
+    let gender = document.getElementsByName("gender");
+    let genderSelected = [...gender].some(g => g.checked);
+
+    if (!genderSelected) {
+        document.getElementById("genderError").textContent = "Select gender";
+        isValid = false;
+    }
+
+    // Hobbies
+    let hobbies = document.getElementsByName("hobby");
+    let hobbySelected = [...hobbies].some(h => h.checked);
+
+    if (!hobbySelected) {
+        document.getElementById("hobbyError").textContent = "Select at least one";
+        isValid = false;
+    }
+
+    if (!isValid) return false;
+
+    alert("Form submitted successfully!");
+    return true;
+}
+</script>
+
+</body>
+</html>
